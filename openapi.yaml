@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  title: Ticketing System API
+  description: API контракт для системи бронювання квитків
+  version: 1.0.0
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/tickets:
+    get:
+      summary: Отримати список квитків
+      description: Повертає масив доступних рейсів за заданими фільтрами.
+      security: []
+      responses:
+        '200':
+          description: Список квитків успішно отримано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/bookings:
+    post:
+      summary: Створити бронювання
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '201':
+          description: Бронювання створено
+        '401':
+          description: Необхідна авторизація
+
+  /api/bookings/{id}:
+    patch:
+      summary: Оновити бронювання
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Дані оновлено
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Скасувати бронювання
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Бронювання скасовано
+        '403':
+          description: Скасування заборонено правилами тарифу
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: string
+        route:
+          type: string
+        price:
+          type: number
+        available_seats:
+          type: integer
+
+    BookingRequest:
+      type: object
+      required:
+        - ticket_id
+        - passenger_name
+      properties:
+        ticket_id:
+          type: string
+        passenger_name:
+          type: string
+        seat_number:
+          type: integer
+
+  responses:
+    NotFound:
+      description: Ресурс не знайдено
+    BadRequest:
+      description: Некоректний запит (помилка в параметрах)
+    Unauthorized:
+      description: Неавторизований доступ (відсутній або невірний токен)
