@@ -20,6 +20,8 @@ nav:
       - Специфікація вимог (SSD): architecture/SSD.md
       - Технічний дизайн (SDD): architecture/SDD.md
       - Інфраструктура (ISD): architecture/ISD.md
+      - Контракт API: api-contract.md
+      - Специфікація OpenAPI: openapi.yaml
   - 🛡 Якість та тестування:
       - Стратегія тестування: quality/test-strategy.md
       - План тестування: quality/test-plan.md
@@ -28,6 +30,12 @@ nav:
       - Single Source of Truth: process/ssot.md
       - Maintenance Manual: process/maintenance.md
       - Project Roadmap: process/roadmap.md
+      - Автоматизація CI/CD: ci-cd-docs.md
+      - Definition of Done: definition-of-done.md
+  - 🛠 Інструменти:
+      - Swagger UI: swagger.md
+  - 🎨 Інтерфейс:
+      - Компоненти UI: ui-components.md
   - Контрольні питання:
       - Контрольні питання: questions.md
 
@@ -38,3 +46,7 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+
+plugins:
+  - search
+  - swagger-ui-tag
